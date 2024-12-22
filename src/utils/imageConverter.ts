@@ -5,15 +5,16 @@ export async function convertToPNG(file: File): Promise<string> {
     let imageBlob: Blob = file;
     
     // Handle different image formats
-    if (file.type === 'image/heic') {
+    if (file.type === 'image/heic' || file.type === 'image/heif' || file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif')) {
       const convertedBlob = await heic2any({
         blob: file,
-        toType: 'image/png'
+        toType: 'image/png',
+        quality: 1
       });
       
       imageBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
     } else if (!['image/webp', 'image/avif'].includes(file.type)) {
-      throw new Error('Please upload a WebP, AVIF, or HEIC image');
+      throw new Error('Please upload a WebP, AVIF, HEIC, or HEIF image');
     }
 
     // Create object URL for the blob
@@ -51,6 +52,9 @@ export async function convertToPNG(file: File): Promise<string> {
 
 export async function copyImageToClipboard(dataUrl: string): Promise<void> {
   try {
+    // Focus the window before attempting to write to clipboard
+    window.focus();
+    
     const response = await fetch(dataUrl);
     const blob = await response.blob();
     await navigator.clipboard.write([
