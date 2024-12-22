@@ -71,8 +71,8 @@ export function ImageConverter() {
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">WebP/AVIF to PNG Converter</h1>
-        <p className="text-gray-600">Convert your WebP or AVIF images to PNG format</p>
+        <h1 className="text-3xl font-bold text-gray-900">Image Converter</h1>
+        <p className="text-gray-600">Convert your WebP, AVIF, or HEIC images to PNG format</p>
       </div>
 
       <div
@@ -87,7 +87,7 @@ export function ImageConverter() {
       >
         <input
           type="file"
-          accept="image/webp,image/avif"
+          accept="image/webp,image/avif,image/heic"
           onChange={handleImageUpload}
           className="hidden"
           id="file-upload"
@@ -98,7 +98,7 @@ export function ImageConverter() {
         >
           <Upload className="w-12 h-12 text-gray-400 mb-3" />
           <span className="text-gray-600">Drop your image here or click to upload</span>
-          <span className="text-sm text-gray-500 mt-1">Supports WebP and AVIF formats</span>
+          <span className="text-sm text-gray-500 mt-1">Supports WebP, AVIF, and HEIC formats</span>
         </label>
       </div>
 

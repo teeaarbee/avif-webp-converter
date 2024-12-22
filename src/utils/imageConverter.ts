@@ -1,12 +1,23 @@
-export async function convertToPNG(file: File): Promise<string> {
-  // Validate file type
-  if (!['image/webp', 'image/avif'].includes(file.type)) {
-    throw new Error('Please upload a WebP or AVIF image');
-  }
+import heic2any from 'heic2any';
 
+export async function convertToPNG(file: File): Promise<string> {
   try {
-    // Create object URL for the file
-    const objectUrl = URL.createObjectURL(file);
+    let imageBlob: Blob = file;
+    
+    // Handle different image formats
+    if (file.type === 'image/heic') {
+      const convertedBlob = await heic2any({
+        blob: file,
+        toType: 'image/png'
+      });
+      
+      imageBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+    } else if (!['image/webp', 'image/avif'].includes(file.type)) {
+      throw new Error('Please upload a WebP, AVIF, or HEIC image');
+    }
+
+    // Create object URL for the blob
+    const objectUrl = URL.createObjectURL(imageBlob);
     
     // Create and load image
     const image = new Image();
@@ -33,6 +44,7 @@ export async function convertToPNG(file: File): Promise<string> {
     // Convert to PNG
     return canvas.toDataURL('image/png');
   } catch (error) {
+    console.error('Conversion error:', error);
     throw new Error('Failed to convert image. Please try again.');
   }
 }
