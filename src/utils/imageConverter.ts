@@ -26,8 +26,8 @@ export async function convertToPNG(file: File): Promise<string> {
         console.error('HEIC conversion error:', heicError);
         throw new Error('Unable to convert this HEIC image. Please make sure it\'s a valid image file.');
       }
-    } else if (!['image/webp', 'image/avif', 'image/jpeg', 'image/png'].includes(file.type)) {
-      throw new Error('Please upload a WebP, AVIF, HEIC, or HEIF image');
+    } else if (!['image/webp', 'image/avif', 'image/jpeg', 'image/jfif', 'image/png'].includes(file.type)) {
+      throw new Error('Please upload a WebP, AVIF, HEIC, HEIF, or JFIF image');
     }
 
     // Create object URL for the blob
